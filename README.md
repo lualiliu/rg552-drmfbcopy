@@ -4,4 +4,5 @@ A demo about copy drm framebuffer to /dev/fb0 (copy rg552's dsi framebuffer to h
 # complie & run
 
 make
+
 ./drmfbcopy
