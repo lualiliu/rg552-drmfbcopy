@@ -122,6 +122,8 @@ static int save_fb(drmModeFB *fb, int prime_fd)
 	int ret = 0;
 	unsigned int len = (fb->bpp >> 3) * fb->width * fb->height;
 
+	unsigned int len_480p = (fb->bpp >> 3) * 640 * 480;
+
 	unsigned int len_720p = (fb->bpp >> 3) * 1280 * 720;
 
 	/* open screen file. */
@@ -149,9 +151,18 @@ static int save_fb(drmModeFB *fb, int prime_fd)
 	// Rotation and zoom out
 	while(1){
 	//	rotate_90_ccw(picture, membuffer, 1920,1152);
-		ret = drm_render_rga(buffer, membuffer, 32,1152,1920,1280,720,1152*4,1280*4);
-		memcpy(picture,membuffer,len_720p);
-		usleep(3);	//The RGA actual time-consuming of 1280*720 is 2,000us
+
+	//	ret = drm_render_rga(buffer, picture, 32,1152,1920,1280,720,1152*4,1280*4);
+
+		// tearing fixed(720p)
+	//	ret = drm_render_rga(buffer, membuffer, 32,1152,1920,1280,720,1152*4,1280*4);
+	//	memcpy(picture,membuffer,len_720p);
+	
+		// tearing fixed(480p) the cmdline need set video=HDMI-A-1:720x480@60
+		ret = drm_render_rga(buffer, membuffer, 32,1152,1920,720,480,1152*4,720*4);
+		memcpy(picture,membuffer,len_480p);
+
+		usleep(1);	//The RGA actual time-consuming of 1280*720 is 2,000us
 	}
 	return ret;
 }
