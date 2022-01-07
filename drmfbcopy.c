@@ -146,7 +146,7 @@ static int save_fb(drmModeFB *fb, int prime_fd)
 	/* Drop privileges, to write PNG with user rights */
 	seteuid(getuid());
 
-	void *membuffer = malloc(len_720p);
+	void *membuffer = malloc(len_480p);
 
 	// Rotation and zoom out
 	while(1){
